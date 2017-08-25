@@ -99,7 +99,7 @@ let s:projections = {
       \   'test/test_helper.exs': {
       \     'type': 'test'
       \   },
-      \   'test/lib/*_test.exs': {
+      \   'test/*_test.exs': {
       \     'type': 'test',
       \     'alternate': 'lib/{}.ex',
       \     'template': [
@@ -108,10 +108,6 @@ let s:projections = {
       \       '',
       \       'end'
       \     ]
-      \   },
-      \   'test/*_test.exs': {
-      \     'command': 'test',
-      \     'dispatch': 'mix test {file}'
       \   },
       \   '*': {
       \     'make': 'mix compile',
