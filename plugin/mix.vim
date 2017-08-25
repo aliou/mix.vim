@@ -1,7 +1,7 @@
 " mix.vim - Like rake.vim but for mix.
 " Location: plugin/mix.vim
 " Author:   Aliou Diallo <code@aliou.me>
-" Version:  0.1.0
+" Version:  0.2.0
 
 if exists('g:loaded_mix') || &compatible || v:version < 700
   finish
