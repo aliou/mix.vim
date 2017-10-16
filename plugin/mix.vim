@@ -81,8 +81,7 @@ let s:projections = {
       \     'type': 'task',
       \     'template': [
       \       'defmodule Mix.Tasks.{camelcase|capitalize|dot} do',
-      \       '',
-      \       'use Mix.Task',
+      \       '  use Mix.Task',
       \       '',
       \       'end'
       \     ]
