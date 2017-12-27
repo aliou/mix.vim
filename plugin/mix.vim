@@ -65,6 +65,13 @@ let s:projections = {
       \   'mix.lock': {
       \     'alternate': 'mix.exs'
       \   },
+      \   'apps/*/mix.exs': {
+      \     'type': 'mix',
+      \     'alternate': 'apps/{}/mix.lock'
+      \   },
+      \   'apps/*/mix.lock': {
+      \     'alternate': 'apps/{}/mix.exs'
+      \   },
       \   'config/*.exs': {
       \     'type': 'config',
       \     'template': [
