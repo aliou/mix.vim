@@ -10,6 +10,11 @@ endif
 let g:loaded_mix = 1
 
 " Initialization {{{1
+
+" Find the root of the application.
+" For now, the root is defined as the closest parent folder with a mix.exs file.
+" In the future, we might want to check the content of file for better
+" heurestics, espically concerning umbrella applications.
 function! s:find_root(path) abort
   let l:root = simplify(fnamemodify(a:path, ':p:s?[\/]$??'))
   let l:previous = ''
@@ -23,6 +28,25 @@ function! s:find_root(path) abort
     let l:previous = l:root
     let l:root = fnamemodify(l:root, ':h')
   endwhile
+endfunction
+
+" List the umbrella apps under the mix root.
+function! s:umbrella_apps() abort
+  if !exists('b:mix_root')
+    return []
+  endif
+
+  let l:app_path = b:mix_root . '/apps'
+
+  " XXX: why does `!isdirectory(l:app_path)` does not work?
+  if isdirectory(l:app_path) == v:false
+    return []
+  endif
+
+  " TODO: Will this work on windows ?
+  let l:app_directories = split(globpath(b:mix_root . '/apps', '*'), '\n')
+  let l:apps = map(l:app_directories, "fnamemodify(v:val, ':t')")
+  return l:apps
 endfunction
 
 function! s:Detect(path) abort
@@ -64,13 +88,6 @@ let s:projections = {
       \   },
       \   'mix.lock': {
       \     'alternate': 'mix.exs'
-      \   },
-      \   'apps/*/mix.exs': {
-      \     'type': 'mix',
-      \     'alternate': 'apps/{}/mix.lock'
-      \   },
-      \   'apps/*/mix.lock': {
-      \     'alternate': 'apps/{}/mix.exs'
       \   },
       \   'config/*.exs': {
       \     'type': 'config',
@@ -122,11 +139,81 @@ let s:projections = {
       \   }
       \ }
 
+let s:umbrella_global_projections = {
+      \   'apps/*/mix.exs': {
+      \     'type': 'mix',
+      \     'alternate': 'apps/{}/mix.lock'
+      \   },
+      \   'apps/*/mix.lock': {
+      \     'alternate': 'apps/{}/mix.exs'
+      \   }
+      \ }
+
+" TODO: DRY this.
+let s:umbrella_app_projection = {
+      \   'config/*.exs': {
+      \     'type': 'config',
+      \     'template': [
+      \       'use Mix.Config'
+      \     ]
+      \   },
+      \   'config/config.exs': {
+      \     'type': 'config',
+      \     'template': [
+      \       'use Mix.Config'
+      \     ]
+      \   },
+      \   'lib/mix/tasks/*.ex': {
+      \     'type': 'task',
+      \     'template': [
+      \       'defmodule Mix.Tasks.{camelcase|capitalize|dot} do',
+      \       '  use Mix.Task',
+      \       '',
+      \       'end'
+      \     ]
+      \   },
+      \   'lib/*.ex': {
+      \     'type': 'lib',
+      \     'alternate': 'test/{}_test.exs',
+      \     'template': [
+      \       'defmodule {camelcase|capitalize|dot} do',
+      \       '',
+      \       'end'
+      \     ]
+      \   },
+      \   'test/test_helper.exs': {
+      \     'type': 'test'
+      \   },
+      \   'test/*_test.exs': {
+      \     'type': 'test',
+      \     'alternate': 'lib/{}.ex',
+      \     'template': [
+      \       'defmodule {camelcase|capitalize|dot}Test do',
+      \       '  use ExUnit.Case, async: true',
+      \       '',
+      \       'end'
+      \     ]
+      \   }
+      \ }
+
 function! s:ProjectionistDetect() abort
   call s:Detect(get(g:, 'projectionist_file', ''))
   if exists('b:mix_root')
+    " Add default projections.
     let l:projections = deepcopy(s:projections)
     call projectionist#append(b:mix_root, l:projections)
+
+    " Add "global" commands for umbrella apps.
+    if !empty(s:umbrella_apps())
+      call projectionist#append(b:mix_root, s:umbrella_global_projections)
+    endif
+
+    for l:app_name in s:umbrella_apps()
+      echom l:app_name
+      let l:app_path = b:mix_root . '/apps/' . l:app_name
+      " TODO: Use smaller version of l:projections here.
+      call projectionist#append(l:app_path, s:umbrella_app_projection)
+    endfor
   endif
 endfunction
 
