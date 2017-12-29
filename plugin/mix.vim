@@ -21,6 +21,7 @@ function! s:find_root(path) abort
 
   " Loop on the folder until you find the root folder.
   " The root folder is the one with the mix file.
+  " TODO: Use `findfile` ?
   while l:root !=# l:previous && l:root !=# '/'
     if filereadable(l:root . '/mix.exs')
       return l:root
@@ -80,15 +81,7 @@ augroup END
 " }}}1
 
 " Projectionist {{{
-" TODO: Move this to a JSON file?
-let s:projections = {
-      \   'mix.exs': {
-      \     'type': 'mix',
-      \     'alternate': 'mix.lock'
-      \   },
-      \   'mix.lock': {
-      \     'alternate': 'mix.exs'
-      \   },
+let s:app_projections = {
       \   'config/*.exs': {
       \     'type': 'config',
       \     'template': [
@@ -131,13 +124,24 @@ let s:projections = {
       \       '',
       \       'end'
       \     ]
+      \   }
+      \ }
+
+
+let s:projections = extend({
+      \   'mix.exs': {
+      \     'type': 'mix',
+      \     'alternate': 'mix.lock'
+      \   },
+      \   'mix.lock': {
+      \     'alternate': 'mix.exs'
       \   },
       \   '*': {
       \     'make': 'mix compile',
       \     'dispatch': 'mix test',
       \     'console': 'iex -S mix'
       \   }
-      \ }
+      \ }, s:app_projections)
 
 let s:umbrella_global_projections = {
       \   'apps/*/mix.exs': {
@@ -146,53 +150,6 @@ let s:umbrella_global_projections = {
       \   },
       \   'apps/*/mix.lock': {
       \     'alternate': 'apps/{}/mix.exs'
-      \   }
-      \ }
-
-" TODO: DRY this.
-let s:umbrella_app_projection = {
-      \   'config/*.exs': {
-      \     'type': 'config',
-      \     'template': [
-      \       'use Mix.Config'
-      \     ]
-      \   },
-      \   'config/config.exs': {
-      \     'type': 'config',
-      \     'template': [
-      \       'use Mix.Config'
-      \     ]
-      \   },
-      \   'lib/mix/tasks/*.ex': {
-      \     'type': 'task',
-      \     'template': [
-      \       'defmodule Mix.Tasks.{camelcase|capitalize|dot} do',
-      \       '  use Mix.Task',
-      \       '',
-      \       'end'
-      \     ]
-      \   },
-      \   'lib/*.ex': {
-      \     'type': 'lib',
-      \     'alternate': 'test/{}_test.exs',
-      \     'template': [
-      \       'defmodule {camelcase|capitalize|dot} do',
-      \       '',
-      \       'end'
-      \     ]
-      \   },
-      \   'test/test_helper.exs': {
-      \     'type': 'test'
-      \   },
-      \   'test/*_test.exs': {
-      \     'type': 'test',
-      \     'alternate': 'lib/{}.ex',
-      \     'template': [
-      \       'defmodule {camelcase|capitalize|dot}Test do',
-      \       '  use ExUnit.Case, async: true',
-      \       '',
-      \       'end'
-      \     ]
       \   }
       \ }
 
@@ -208,11 +165,10 @@ function! s:ProjectionistDetect() abort
       call projectionist#append(b:mix_root, s:umbrella_global_projections)
     endif
 
+    " For each app, generate "small" projections for the app.
     for l:app_name in s:umbrella_apps()
-      echom l:app_name
       let l:app_path = b:mix_root . '/apps/' . l:app_name
-      " TODO: Use smaller version of l:projections here.
-      call projectionist#append(l:app_path, s:umbrella_app_projection)
+      call projectionist#append(l:app_path, s:app_projections)
     endfor
   endif
 endfunction
