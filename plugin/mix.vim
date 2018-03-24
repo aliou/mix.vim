@@ -12,9 +12,8 @@ let g:loaded_mix = 1
 " Initialization {{{1
 
 " Find the root of the application.
-" For now, the root is defined as the closest parent folder with a mix.exs file.
-" In the future, we might want to check the content of file for better
-" heurestics, espically concerning umbrella applications.
+" For now, the root is defined as the closest parent folder with a mix.exs file
+" and that is not an umbrella app.
 function! s:find_root(path) abort
   let l:root = simplify(fnamemodify(a:path, ':p:s?[\/]$??'))
   let l:previous = ''
@@ -23,7 +22,12 @@ function! s:find_root(path) abort
   " The root folder is the one with the mix file.
   " TODO: Use `findfile` ?
   while l:root !=# l:previous && l:root !=# '/'
-    if filereadable(l:root . '/mix.exs')
+    let l:parent = fnamemodify(l:root, ':h:t')
+
+    " Handle umbrella apps by manually checking if the proposed root directory
+    " is in the `apps` directory.
+    " TODO: Hmmm, make this better ?
+    if filereadable(l:root . '/mix.exs') && l:parent !=# 'apps'
       return l:root
     endif
     let l:previous = l:root
