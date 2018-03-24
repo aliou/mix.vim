@@ -63,9 +63,15 @@ function! s:ProjectionistDetect() abort
   endif
 endfunction
 
+function! s:define_mix_cmd() abort
+  command! -buffer -bar -bang -nargs=? -complete=customlist,mix#cmd#tasks Mix
+        \ call mix#cmd#run('<bang>', <q-args>)
+endfunction
+
 augroup mix_projectionist
   autocmd!
   autocmd User ProjectionistDetect call s:ProjectionistDetect()
+  autocmd User Mix call s:define_mix_cmd()
 augroup END
 
 " }}}
