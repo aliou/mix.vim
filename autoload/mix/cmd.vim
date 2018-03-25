@@ -8,5 +8,6 @@ endfunction
 
 " TODO: Dispatch, makeprg, compiler, etc
 function! mix#cmd#run(bang, argument)
-  execute '!mix ' . a:argument
+  execute 'make' . a:bang . ' ' . a:argument
+  " execute '!mix ' . a:argument
 endfunction
