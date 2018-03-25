@@ -6,7 +6,7 @@ applications and running Mix commands using `:Mix`. Read the [help][] for a
 complete list of functionalities.
 
 [projectionist.vim]: https://github.com/tpope/vim-projectionist
-[help]: [doc/mix.txt]
+[help]: doc/mix.txt
 
 ## FAQ
 
