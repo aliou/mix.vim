@@ -52,7 +52,7 @@ Plugin 'tpope/vim-projectionist'
 Copyright © Aliou Diallo. Distributed under the same terms as Vim itself. See `:help license`.
 
 ## Thanks
-Massive thanks to [Tim Pope][https://github.com/tpope] for
+Massive thanks to [Tim Pope](https://github.com/tpope) for
 [projectionist.vim][], [rake.vim][] and for inspiring this project.
 
 [rake.vim]: https://github.com/tpope/vim-rake
