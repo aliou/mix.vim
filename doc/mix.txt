@@ -1,0 +1,68 @@
+*mix.txt*  Like rake.vim but for Mix projects.
+
+Author:  Aliou Diallo <https://aliou.me>
+License: Same terms as Vim itself (see |license|)
+
+This plugin is only available if 'compatible' is not set.
+
+INTRODUCTION                                    *mix*
+
+This plugin is designed to use the commands to navigate in a Mix project. It
+is heavily inspired by rake.vim.
+
+Projects are detected by searching for a Mix file (mix.exs) up the directory
+hierarchy. This handles umbrella applications by checking that the Mix file
+isn't in and "apps" directory.
+
+COMMANDS                                        *mix-commands*
+
+                                                *mix-:Mix*
+:Mix [task]             Run the Mix task.
+
+                                                *mix-:A* *mix-:R*
+:A [file]               With no argument, edits the "alternate" file (the test
+                        for an implementation file and vice versa).  With an
+                        argument, edit that file, relative to the project's root.
+
+                                                *mix-:AS* *mix-:RS*
+:AS [file]              Like |:A|, but horizontally split.
+
+                                                *mix-:AV* *mix-:RV*
+:AV [file]              Like |:A|, but vertically split.
+
+                                                *mix-:AT* *mix-:RT*
+:AT [file]              Like |:A|, but use a new tab.
+
+                                                *mix-:AD* *mix-:RD*
+:AD {file}              Like |:A|, but :read the file in.
+
+                                                *mix-:Elib* *mix-:Rlib*
+:Elib [file]            Edit an Elixir file under lib/. Variants exist for
+                        :Slib (|:split|), :Vlib (|:vsplit|), :Tlib
+                        (|:tabedit|), and :Dlib (|:read|).
+
+                                                *mix-:Emix* *mix-:Rmix*
+:Emix [file]            Edits the projects's Mix file or an umbrella
+                        application's Mix file.
+                        Has the same variants as |:Elib|.
+
+                                                *mix-:Etest* *mix-:Rtest*
+:Etest [file]           Edit a test file under test/. Defaults to the test helper.
+                        Has the same variants as |:Elib|.
+
+:Econfig [file]                                 *mix-:Econfig* *mix-:Rconfig*
+                        Edit a configuration file under config/.
+                        Defaults to config/config.exs.
+                        Has the same variants as |:Elib|.
+
+                                                *mix-:Etask* *mix-:Rtask*
+:Etask [file]           Edit a Mix task file under lib/mix/tasks.
+                        Has the same variants as |:Elib|.
+
+ABOUT                                           *mix-about*
+
+Grab the latest version or report a bug on GitHub:
+
+http://github.com/aliou/mix.vim
+
+ vim:tw=78:et:ft=help:norl:
