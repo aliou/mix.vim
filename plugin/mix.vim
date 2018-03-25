@@ -52,23 +52,12 @@ function! s:Setup(path) abort
   endif
 endfunction
 
-augroup mix
-  autocmd!
-  autocmd BufNewFile,BufReadPost *
-        \ if empty(&filetype) |
-        \   call s:Setup(expand('<amatch>:p')) |
-        \ endif
-  autocmd FileType * call s:Setup(expand('%:p'))
-  autocmd User NERDTreeInit,NERDTreeNewRoot call s:Setup(b:NERDTreeRoot.path.str())
-  autocmd VimEnter * if expand('<amatch>')=='' | call s:Setup(getcwd()) | endif
-augroup END
-
 " }}}1
 
 " Projectionist {{{
 
 function! s:ProjectionistDetect() abort
-  call s:Detect(get(g:, 'projectionist_file', ''))
+  call s:Setup(get(g:, 'projectionist_file', ''))
   if exists('b:mix_root')
     call mix#projections#setup()
   endif
