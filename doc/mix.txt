@@ -19,43 +19,43 @@ COMMANDS                                        *mix-commands*
                                                 *mix-:Mix*
 :Mix [task]             Run the Mix task.
 
-                                                *mix-:A* *mix-:R*
+                                                *mix-:A*
 :A [file]               With no argument, edits the "alternate" file (the test
                         for an implementation file and vice versa).  With an
                         argument, edit that file, relative to the project's root.
 
-                                                *mix-:AS* *mix-:RS*
+                                                *mix-:AS*
 :AS [file]              Like |:A|, but horizontally split.
 
-                                                *mix-:AV* *mix-:RV*
+                                                *mix-:AV*
 :AV [file]              Like |:A|, but vertically split.
 
-                                                *mix-:AT* *mix-:RT*
+                                                *mix-:AT*
 :AT [file]              Like |:A|, but use a new tab.
 
-                                                *mix-:AD* *mix-:RD*
+                                                *mix-:AD*
 :AD {file}              Like |:A|, but :read the file in.
 
-                                                *mix-:Elib* *mix-:Rlib*
+                                                *mix-:Elib*
 :Elib [file]            Edit an Elixir file under lib/. Variants exist for
                         :Slib (|:split|), :Vlib (|:vsplit|), :Tlib
                         (|:tabedit|), and :Dlib (|:read|).
 
-                                                *mix-:Emix* *mix-:Rmix*
+                                                *mix-:Emix*
 :Emix [file]            Edits the projects's Mix file or an umbrella
                         application's Mix file.
                         Has the same variants as |:Elib|.
 
-                                                *mix-:Etest* *mix-:Rtest*
+                                                *mix-:Etest*
 :Etest [file]           Edit a test file under test/. Defaults to the test helper.
                         Has the same variants as |:Elib|.
 
-:Econfig [file]                                 *mix-:Econfig* *mix-:Rconfig*
+:Econfig [file]                                 *mix-:Econfig*
                         Edit a configuration file under config/.
                         Defaults to config/config.exs.
                         Has the same variants as |:Elib|.
 
-                                                *mix-:Etask* *mix-:Rtask*
+                                                *mix-:Etask*
 :Etask [file]           Edit a Mix task file under lib/mix/tasks.
                         Has the same variants as |:Elib|.
 
