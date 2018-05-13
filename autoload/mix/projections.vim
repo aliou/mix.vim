@@ -30,10 +30,12 @@ let s:app_projections = {
       \     ]
       \   },
       \   'test/test_helper.exs': {
-      \     'type': 'test'
+      \     'type': 'test',
+      \     'make': 'mix test'
       \   },
       \   'test/*_test.exs': {
       \     'type': 'test',
+      \     'make': 'mix test {file}',
       \     'alternate': 'lib/{}.ex',
       \     'template': [
       \       'defmodule {camelcase|capitalize|dot}Test do',
