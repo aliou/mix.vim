@@ -29,6 +29,9 @@ let s:app_projections = {
       \       'end'
       \     ]
       \   },
+      \   'priv/repo/migrations/*.exs': {
+      \     'type': 'migration'
+      \   },
       \   'test/test_helper.exs': {
       \     'type': 'test',
       \     'make': 'mix test'
@@ -45,7 +48,6 @@ let s:app_projections = {
       \     ]
       \   }
       \ }
-
 
 let s:projections = extend({
       \   'mix.exs': {
