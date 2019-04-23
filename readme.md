@@ -27,10 +27,10 @@ commands to open a new tab and edit a file at the same time.
 Install using your favorite package manager, or use Vim's built-in package
 support:
 
-    mkdir -p ~/.vim/pack/tpope/start
-    cd ~/.vim/pack/tpope/start
-    git clone https://tpope.io/vim/dispatch.git
-    vim -u NONE -c "helptags dispatch/doc" -c q
+    mkdir -p ~/.vim/pack/aliou/start
+    cd ~/.vim/pack/aliou/start
+    git clone https://aliou.io/vim/mix.vim.git
+    vim -u NONE -c "helptags mix.vim/doc" -c q
 
 ## License
 Copyright © Aliou Diallo. Distributed under the same terms as Vim itself. See `:help license`.
